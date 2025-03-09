@@ -19,11 +19,14 @@ for i in range(3, 15):
 deck.extend([17 for _ in range(4)])
 deck.extend([20, 30])
 
+cards4sample = list(range(3, 15))
+cards4sample.extend([17])
+
 
 class Env:
 
-    def __init__(self, objective):
-        self.objective = objective
+    def __init__(self, flags):
+        self.objective = flags.bjective
 
         # Initialize players
         # We use three dummy player for the target position
@@ -35,6 +38,7 @@ class Env:
         self._env = GameEnv(self.players)
         self.total_round = 0
         self.infoset = None
+        self.wild_mode = flags.wild_mode
 
     def reset(self, model, device, flags=None):
         self._env.reset()
@@ -50,7 +54,12 @@ class Env:
         for key in card_play_data:
             card_play_data[key].sort()
         # 重置叫牌
-        self._env.bid_init(card_play_data)
+        if self.wild_mode:
+            import random
+            wild_rank = random.choice(cards4sample)
+        else:
+            wild_rank = None
+        self._env.bid_init(card_play_data, wild_rank)
 
         bid_over = self._bid_over
         self.infoset = self._bid_infoset

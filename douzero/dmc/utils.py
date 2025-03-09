@@ -32,7 +32,7 @@ Buffers = typing.Dict[str, typing.List[torch.Tensor]]
 
 
 def create_env(flags):
-    return Env(flags.objective)
+    return Env(flags)
 
 
 def get_batch(b_queues, position, flags, lock):

@@ -104,7 +104,9 @@ class GameEnv(object):
 
         self.bid_winner = None
 
-    def bid_init(self, card_play_data):
+    def bid_init(self, card_play_data, wild_rank=None):
+        
+        self.wild_rank = wild_rank
         self.bid_info_sets['first'].player_hand_cards = \
             card_play_data['first']
         self.bid_info_sets['second'].player_hand_cards = \
@@ -228,6 +230,7 @@ class GameEnv(object):
         for pos in ["landlord", "landlord_down", "landlord_up"]:
             self.info_sets[pos].bid_over = self.bid_over
             self.info_sets[pos].bid_count = self.bid_count
+            self.info_sets[pos].wild_rank = self.wild_rank
         self.get_acting_player_position()
         self.game_infoset = self.get_infoset()
 
@@ -435,9 +438,13 @@ class GameEnv(object):
             self.info_sets[self.acting_player_position].player_hand_cards.sort()
 
     def get_legal_card_play_actions(self):
+        md.set_wild_rank(self.wild_rank)
+        ms.set_wild_rank(self.wild_rank)
+        
         if self.bid_over:
             mg = MovesGener(
-                self.info_sets[self.acting_player_position].player_hand_cards)
+                self.info_sets[self.acting_player_position].player_hand_cards,
+                wild_rank=self.wild_rank)
 
             action_sequence = self.card_play_action_seq
 
@@ -702,3 +709,5 @@ class InfoSet(object):
         self.spring = None
 
         self.bid_over = None
+        
+        self.wild_rank = None
