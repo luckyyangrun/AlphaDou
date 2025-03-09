@@ -31,6 +31,8 @@ This will train AlphaDou on one GPU. To train AlphaDou on multiple GPUs. Use the
 *   `--num_actor_devices`: how many of the GPU deveices will be used for simulation, i.e., self-play
 *   `--num_actors`: how many actor processes will be used for each device
 *   `--training_device`: which device will be used for training DouZero
+*   `--wild_mode`: laizi
+
 
 For example, if we have 4 GPUs, where we want to use the first 3 GPUs to have 15 actors each for simulating and the 4th GPU for training, we can run the following command:
 ```
